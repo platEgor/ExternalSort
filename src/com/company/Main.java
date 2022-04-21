@@ -8,8 +8,7 @@ import java.io.RandomAccessFile;
 public class Main {
 
     public static void sortInd(RandomAccessFile f, int[] ind) throws IOException {
-        byte x,y;
-        int k,t;
+        int x,y,k,t;
         for(int i = 0; i < ind.length-1; i++){
             f.seek(ind[i]);
             x = f.readByte();
@@ -28,6 +27,11 @@ public class Main {
     }
 
     public static void main(String[] args) throws IOException {
+        Person[] people = new Person[20];
+        for(int i = 0; i < people.length; i++){
+            people[i] = new Person(String.valueOf(i), (int) (Math.random()*20));
+            System.out.printf("%s %4d \n", people[i].n, people[i].c);
+        }
         int n = 20;
         RandomAccessFile d = new RandomAccessFile("1.txt", "rw");
         int[] ind = new int[n];
@@ -51,5 +55,13 @@ public class Main {
             System.out.printf("%4d", d.read());
         }
         d.close();
+    }
+}
+class Person{
+    String n;
+    int c;
+    Person(String N, int C){
+        n=N;
+        c=C;
     }
 }
