@@ -1,9 +1,9 @@
 package com.company;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 
 public class Main {
 
@@ -20,6 +20,7 @@ public class Main {
                     k=j; x=y;
                 }
             }
+            //swap(ind[k], ind[i])
             t=ind[k];
             ind[k]=ind[i];
             ind[i]=t;
@@ -28,12 +29,23 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
         Person[] people = new Person[20];
-        for(int i = 0; i < people.length; i++){
-            people[i] = new Person(String.valueOf(i), (int) (Math.random()*20));
-            System.out.printf("%s %4d \n", people[i].n, people[i].c);
-        }
+
         int n = 20;
         RandomAccessFile d = new RandomAccessFile("1.txt", "rw");
+        for(int i = 0; i < people.length-1; i++){
+            people[i] = new Person(String.valueOf((i+1)*11), (int) (Math.random()*20));
+            int j=0;
+            while(people[i].n[j]!=(char)0) System.out.print(people[i].n[j++]);
+            System.out.println();
+//            System.out.print("Name: ");
+//            System.out.print(people[i].n);
+//            System.out.println(" Age: " + people[i].c);
+            for(j=0; j < 10; j++){
+                d.write(people[i].n[j]);
+            }
+            d.writeInt(people[i].c);
+
+        }
         int[] ind = new int[n];
         for(int i = 0; i < ind.length; i++) d.write((int)Math.round(65+ Math.random()*25));
         for(int i = 0; i < ind.length; i++){
@@ -46,8 +58,8 @@ public class Main {
         System.out.println();
         sortInd(d, ind);
 
-        for(int i = 0; i < ind.length; i++){
-            System.out.printf("%4d",ind[i]);
+        for (int j : ind) {
+            System.out.printf("%4d", j);
         }
         System.out.println();
         for(var i=0; i<ind.length;i++) {
@@ -57,11 +69,14 @@ public class Main {
         d.close();
     }
 }
+
 class Person{
-    String n;
+
+    char[] n = new char[10];
     int c;
+
     Person(String N, int C){
-        n=N;
+        for(int i = 0; i < N.length(); i++) n[i] = N.charAt(i);
         c=C;
     }
 }
